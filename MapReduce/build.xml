@@ -3,12 +3,12 @@
     <!--this file was created by Eclipse Runnable JAR Export Wizard-->
     <!--ANT 1.7 is required                                        -->
     <target name="create_run_jar">
-        <jar destfile="/Users/csanchez/Development/hadoop-page-rank/HadoopPageRank.jar" filesetmanifest="mergewithoutmain">
+        <jar destfile="../HadoopPageRank.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="com.xebia.sandbox.hadoop.WikiPageRanking"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
-            <fileset dir="/Users/csanchez/Development/hadoop-page-rank/MapReduce/bin"/>
+            <fileset dir="bin"/>
             <zipfileset excludes="META-INF/*.SF" src="/usr/local/Cellar/hadoop/2.5.1/libexec/share/hadoop/mapreduce/hadoop-mapreduce-client-app-2.5.1.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="/usr/local/Cellar/hadoop/2.5.1/libexec/share/hadoop/mapreduce/hadoop-mapreduce-client-common-2.5.1.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="/usr/local/Cellar/hadoop/2.5.1/libexec/share/hadoop/mapreduce/hadoop-mapreduce-client-core-2.5.1.jar"/>
