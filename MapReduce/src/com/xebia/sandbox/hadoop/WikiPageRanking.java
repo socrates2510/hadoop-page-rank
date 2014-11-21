@@ -1,10 +1,16 @@
 package com.xebia.sandbox.hadoop;
 
+import com.xebia.sandbox.hadoop.job1.xmlhakker.WikiLinksReducer;
+import com.xebia.sandbox.hadoop.job1.xmlhakker.WikiPageLinksMapper;
+import com.xebia.sandbox.hadoop.job1.xmlhakker.XmlInputFormat;
 import com.xebia.sandbox.hadoop.job2.calculate.RankCalculateMapper;
 import com.xebia.sandbox.hadoop.job2.calculate.RankCalculateReduce;
 import com.xebia.sandbox.hadoop.job3.result.RankingMapper;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.FileUtil;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.Text;
@@ -30,24 +36,62 @@ public class WikiPageRanking extends Configured implements Tool {
 
     @Override
     public int run(String[] args) throws Exception {
-        boolean isCompleted = true;
+        boolean isCompleted = copyInputFile("pagerank/in/"+args[0], "pagerank/result/iter00");     
+        if (!isCompleted) return 1;
 
         String lastResultPath = null;
 
         for (int runs = 0; runs < 5; runs++) {
-            String inPath = "wiki/ranking/iter" + nf.format(runs);
-            lastResultPath = "wiki/ranking/iter" + nf.format(runs + 1);
+            String inPath = "pagerank/result/iter" + nf.format(runs);
+            lastResultPath = "pagerank/result/iter" + nf.format(runs + 1);
 
             isCompleted = runRankCalculation(inPath, lastResultPath);
 
             if (!isCompleted) return 1;
         }
 
-        isCompleted = runRankOrdering(lastResultPath, "wiki/result");
+        isCompleted = runRankOrdering(lastResultPath, "pagerank/result");
 
         if (!isCompleted) return 1;
         return 0;
     }
+    
+    public boolean copyInputFile(String inputFile, String outputFile) throws IOException
+    {
+    	Configuration config = new Configuration();
+    	FileSystem hdfs = FileSystem.get(config);
+    	Path inputPath = new Path(inputFile);
+    	Path outputPath = new Path(outputFile);
+    		
+    	boolean success = FileUtil.copy(hdfs, inputPath, hdfs, outputPath, false, true, config);    	
+    	return success;
+    }
+
+
+//    public boolean runXmlParsing(String inputPath, String outputPath) throws IOException, ClassNotFoundException, InterruptedException {
+//        Configuration conf = new Configuration();
+//        conf.set(XmlInputFormat.START_TAG_KEY, "<page>");
+//        conf.set(XmlInputFormat.END_TAG_KEY, "</page>");
+//
+//        Job xmlHakker = Job.getInstance(conf, "xmlHakker");
+//        xmlHakker.setJarByClass(WikiPageRanking.class);
+//
+//        // Input / Mapper
+//        FileInputFormat.addInputPath(xmlHakker, new Path(inputPath));
+//        xmlHakker.setInputFormatClass(XmlInputFormat.class);
+//        xmlHakker.setMapperClass(WikiPageLinksMapper.class);
+//        xmlHakker.setMapOutputKeyClass(Text.class);
+//
+//        // Output / Reducer
+//        FileOutputFormat.setOutputPath(xmlHakker, new Path(outputPath));
+//        xmlHakker.setOutputFormatClass(TextOutputFormat.class);
+//
+//        xmlHakker.setOutputKeyClass(Text.class);
+//        xmlHakker.setOutputValueClass(Text.class);
+//        xmlHakker.setReducerClass(WikiLinksReducer.class);
+//
+//        return xmlHakker.waitForCompletion(true);
+//    }
 
     private boolean runRankCalculation(String inputPath, String outputPath) throws IOException, ClassNotFoundException, InterruptedException {
         Configuration conf = new Configuration();
