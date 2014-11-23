@@ -1,8 +1,5 @@
 package com.xebia.sandbox.hadoop;
 
-import com.xebia.sandbox.hadoop.job1.xmlhakker.WikiLinksReducer;
-import com.xebia.sandbox.hadoop.job1.xmlhakker.WikiPageLinksMapper;
-import com.xebia.sandbox.hadoop.job1.xmlhakker.XmlInputFormat;
 import com.xebia.sandbox.hadoop.job2.calculate.RankCalculateMapper;
 import com.xebia.sandbox.hadoop.job2.calculate.RankCalculateReduce;
 import com.xebia.sandbox.hadoop.job3.result.RankingMapper;
@@ -66,32 +63,6 @@ public class WikiPageRanking extends Configured implements Tool {
     	boolean success = FileUtil.copy(hdfs, inputPath, hdfs, outputPath, false, true, config);    	
     	return success;
     }
-
-
-//    public boolean runXmlParsing(String inputPath, String outputPath) throws IOException, ClassNotFoundException, InterruptedException {
-//        Configuration conf = new Configuration();
-//        conf.set(XmlInputFormat.START_TAG_KEY, "<page>");
-//        conf.set(XmlInputFormat.END_TAG_KEY, "</page>");
-//
-//        Job xmlHakker = Job.getInstance(conf, "xmlHakker");
-//        xmlHakker.setJarByClass(WikiPageRanking.class);
-//
-//        // Input / Mapper
-//        FileInputFormat.addInputPath(xmlHakker, new Path(inputPath));
-//        xmlHakker.setInputFormatClass(XmlInputFormat.class);
-//        xmlHakker.setMapperClass(WikiPageLinksMapper.class);
-//        xmlHakker.setMapOutputKeyClass(Text.class);
-//
-//        // Output / Reducer
-//        FileOutputFormat.setOutputPath(xmlHakker, new Path(outputPath));
-//        xmlHakker.setOutputFormatClass(TextOutputFormat.class);
-//
-//        xmlHakker.setOutputKeyClass(Text.class);
-//        xmlHakker.setOutputValueClass(Text.class);
-//        xmlHakker.setReducerClass(WikiLinksReducer.class);
-//
-//        return xmlHakker.waitForCompletion(true);
-//    }
 
     private boolean runRankCalculation(String inputPath, String outputPath) throws IOException, ClassNotFoundException, InterruptedException {
         Configuration conf = new Configuration();
