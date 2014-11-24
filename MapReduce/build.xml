@@ -5,7 +5,7 @@
     <target name="create_run_jar">
         <jar destfile="/Users/csanchez/Development/hadoop-page-rank/HadoopPageRank.jar" filesetmanifest="mergewithoutmain">
             <manifest>
-                <attribute name="Main-Class" value="com.xebia.sandbox.hadoop.WikiPageRanking"/>
+                <attribute name="Main-Class" value="com.basesdedatos.hadoop.HadoopPageRanking"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="/Users/csanchez/Development/hadoop-page-rank/MapReduce/bin"/>
