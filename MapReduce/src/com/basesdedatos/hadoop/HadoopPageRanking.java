@@ -1,5 +1,7 @@
 package com.basesdedatos.hadoop;
 
+
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.FileSystem;
@@ -19,6 +21,10 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+/**
+ * @author csanchez, cgamboa, jcbrenes
+ *
+ */
 public class HadoopPageRanking extends Configured implements Tool {
 
     private static NumberFormat nf = new DecimalFormat("00");

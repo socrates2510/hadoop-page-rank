@@ -5,6 +5,10 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 
+/**
+ * @author csanchez, cgamboa, jcbrenes
+ *
+ */
 public class RankCalculateReduce extends Reducer<Text, Text, Text, Text> {
 
     private static final float damping = 0.85F;

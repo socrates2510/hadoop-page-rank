@@ -8,6 +8,10 @@ import org.apache.hadoop.mapreduce.Mapper;
 import java.io.IOException;
 import java.nio.charset.CharacterCodingException;
 
+/**
+ * @author csanchez, cgamboa, jcbrenes
+ *
+ */
 public class RankingMapper extends Mapper<LongWritable, Text, FloatWritable, Text> {
 
     @Override
